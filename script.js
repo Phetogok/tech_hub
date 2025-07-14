@@ -4,7 +4,8 @@ const products = [
     name: "iphone 15 pro",
     price: 999,
     category: "phones",
-    image:"https://www.mobalife.co.za/wp-content/uploads/2024/08/Iphone-15-Pro-Max.jpg",
+    image:
+      "https://www.mobalife.co.za/wp-content/uploads/2024/08/Iphone-15-Pro-Max.jpg",
     description: "The latest iPhone with amazing camera and performance",
   },
   {
@@ -12,7 +13,8 @@ const products = [
     name: "MacBook Air",
     price: 1199,
     category: "laptops",
-    image: "https://www.istore.co.za/media/catalog/product/cache/7cbfd4bf9761b066f119e95af17e67c5/m/a/macbook_air_13_in_m3_midnight_pdp_image_position_1__wwen.jpg",
+    image:
+      "https://www.istore.co.za/media/catalog/product/cache/7cbfd4bf9761b066f119e95af17e67c5/m/a/macbook_air_13_in_m3_midnight_pdp_image_position_1__wwen.jpg",
     description: "Lightweight laptop perfect for work and creativity",
   },
   {
@@ -20,7 +22,8 @@ const products = [
     name: "AirPods Pro",
     price: 249,
     category: "accessories",
-    image: "https://www.digicape.co.za/image/cache/catalog/_products/2024/AirPods/AirPods_4/AirPods_4_1-1000x1000.jpg",
+    image:
+      "https://www.digicape.co.za/image/cache/catalog/_products/2024/AirPods/AirPods_4/AirPods_4_1-1000x1000.jpg",
     description: "Wireless earbuds with noise cancellation",
   },
   {
@@ -28,14 +31,15 @@ const products = [
     name: "Samsung Galaxy S24",
     price: 899,
     category: "phones",
-    image: "https://www.technomobi.co.za/media/catalog/product/cache/e2a07cde3e161746aa285b73c334c4ba/1/0/104073413_588bec06e9a74b43f487e76f293a522f.png",
+    image:
+      "https://www.technomobi.co.za/media/catalog/product/cache/e2a07cde3e161746aa285b73c334c4ba/1/0/104073413_588bec06e9a74b43f487e76f293a522f.png",
     description: "Android phone with incredible features",
   },
   {
     id: 5,
     name: "Dell Laptop",
     price: 799,
-    category: "laptop",
+    category: "laptops",
     image: "https://tech.co.za/wp-content/uploads/2024/09/Latitude-3450d.png",
     description: "Reliable laptop for everyday computing",
   },
@@ -72,38 +76,81 @@ function formatPrice(price) {
 function createProductCard(product) {
   return `
         <div class="product-card">
-            <img src="${product.image}" alt="${product.name}" class="product-image">
+            <img src="${product.image}" alt="${
+    product.name
+  }" class="product-image">
             <div class="product-info">
                 <h3 class="product-title">${product.name}</h3>
                 <p class="product-description">${product.description}</p>
                 <div class="product-price">${formatPrice(product.price)}</div>
                 <div class="product-actions">
-                    <button class="btn btn-primary btn-small" onclick="addToCart(${product.id})"> Add to Cart </button>
-                    <button class="btn btn-secondary btn-small" onclick="viewProducts(${product.id})"> View Details </button>
+                    <button class="btn btn-primary btn-small" onclick="addToCart(${
+                      product.id
+                    })"> Add to Cart </button>
+                    <button class="btn btn-secondary btn-small" onclick="viewProducts(${
+                      product.id
+                    })"> View Details </button>
                 </div>
             </div>
         </div>
     `;
 }
 
-function displayProducts(productsToShow = products){
-    if(productsGrid){
-        const productsHTML = productsToShow.map(createProductCard).join('');
-        productsGrid.innerHTML = productsHTML;
-    }
+function displayProducts(productsToShow = products) {
+  if (productsGrid) {
+    const productsHTML = productsToShow.map(createProductCard).join("");
+    productsGrid.innerHTML = productsHTML;
+  }
 }
 
-function addToCart(productID){
+function addToCart(productID) {
   alert(`Product ${productID} added to cart`);
-
 }
 
-function viewProducts(productID){
-  const product = products.find(pro => pro.id === productID);
-  alert('Product: ' + product.name + '\nPrice: ' + formatPrice(product.price) + '\nDescription: ' + product.description)
+function viewProducts(productID) {
+  const product = products.find((pro) => pro.id === productID);
+  alert(
+    "Product: " +
+      product.name +
+      "\nPrice: " +
+      formatPrice(product.price) +
+      "\nDescription: " +
+      product.description
+  );
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('Page loading, Products')
-  displayProducts()
-})
+function setupFilters() {
+  //Get all filter buttons
+  const filterButtons = document.querySelectorAll(".filter-btn");
+
+  //Add click event to each button
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      //Remove 'active' class from all buttons
+      filterButtons.forEach((btn) => btn.classList.remove("active"));
+
+      //Add 'clicked' class to clicked button
+      this.classList.add("active");
+
+      //Get category from the buttons dat-category attribute
+      const category = this.getAttribute("data-category");
+
+      //Filter products based on category
+      let filteredProducts;
+      if (category === "all") {
+        filteredProducts = products;
+      } else {
+        filteredProducts = products.filter(
+          (product) => product.category === category
+        );
+      }
+      displayProducts(filteredProducts);
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("Page loading, Products");
+  displayProducts();
+  setupFilters();
+});
