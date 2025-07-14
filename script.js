@@ -103,6 +103,8 @@ function displayProducts(productsToShow = products) {
   }
 }
 
+
+
 function addToCart(productID) {
   alert(`Product ${productID} added to cart`);
 }
