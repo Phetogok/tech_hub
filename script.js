@@ -103,10 +103,62 @@ function displayProducts(productsToShow = products) {
   }
 }
 
+function updateCartCount() {
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
+  if (cartCountElement) {
+    cartCountElement.textContent = totalItems;
+  }
+
+  console.log("cart now has", totalItems);
+}
+
+function saveCart(){
+  localStorage.setItem('techvibe-cart', JSON.stringify(cart))
+}
+
+function loadCart(){
+  const savedCart = localStorage.getItem('techvibe-cart');
+  if(savedCart){
+    cart = JSON.parse(savedCart);
+    updateCartCount()
+    
+  }
+}
+
+function showNotification(message){
+  const notification = document.createElement('div');
+  notification.className = 'notification';
+  notification.textContent = message;
+
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.remove();
+  }, 3000);
+}
 
 function addToCart(productID) {
-  alert(`Product ${productID} added to cart`);
+   const product = products.find(p => p.id === productID);
+  if(!product){
+    console.error('Product not found')
+    return;
+  }
+
+  const existingItem = cart.find(item => item.id === productID)
+  if(existingItem){
+    existingItem.quantity += 1;
+  } else {
+    cart.push({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: 1
+    });
+  }
+  updateCartCount();
+  saveCart();
+  showNotification(product.name + 'added to cart!')
 }
 
 function viewProducts(productID) {
@@ -153,6 +205,7 @@ function setupFilters() {
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Page loading, Products");
+  loadCart();
   displayProducts();
   setupFilters();
 });
