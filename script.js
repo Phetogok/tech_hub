@@ -113,6 +113,92 @@ function updateCartCount() {
   console.log("cart now has", totalItems);
 }
 
+function updateQuantity(productID, newQuantity){
+  const item = cart.find(item => item.id === productID)
+  if(item){
+    if(newQuantity <= 0){
+      removeFromCart(productID)
+    } else{
+      item.quantity = newQuantity;
+      updateCartCount();
+      saveCart();
+      displayCartItems();
+      updateCartSummary();
+    }
+  }
+
+}
+
+function removeFromCart(productID){
+  cart = cart.filter(item => item.id !== productID);
+  updateCartCount()
+  saveCart()
+  displayCartItems()
+  updateCartSummary()
+  showNotification("Item removed from cart")
+}
+
+function createCartItemHTML(item){
+  return `
+      <div class="cart-item">
+        <img src="${item.image}" alt="${item.name}" class="cart-item-image"/>
+        <div class="cart-item-details">
+          <h4>${item.name}</h4>
+          <p>${formatPrice(item.price)}</p>
+        </div>
+        <div class="cart-item-controls">
+          <div class="quantity-controls">
+            <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
+            <span>${item.quantity}</span>
+            <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">-</button>
+          </div>
+          <div class="cart-item-total">${formatPrice(item.price * item.quantity)}</div>
+          <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
+        
+        </div>
+      
+      
+      
+      
+      </div>
+  `
+}
+
+function displayCartItems(){
+  const cartItemsContainer = document.getElementById('cart-items');
+  const emptyCartElement = document.getElementById('empty-cart')
+
+  if(!cartItemsContainer) return;
+
+  if(cart.length === 0){
+    cartItemsContainer.style.display = 'none';
+    if(emptyCartElement) emptyCartElement.style.display = 'block';
+    document.querySelector('.cart-summary').style.display = 'none';
+  } else {
+    cartItemsContainer.style.display = 'block';
+    if(emptyCartElement) emptyCartElement.style.display = 'none';
+    document.querySelector('.cart-summary').style.display = 'block';
+    cartItemsContainer.innerHTML = cart.map(createCartItemHTML).join('');
+  }
+}
+
+function updateCartSummary(){
+  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const shipping = subtotal > 0  ? 9.99 : 0;
+  const tax = subtotal * 0.08;
+  const total = subtotal + shipping + tax;
+
+  const subtotalElement = document.getElementById('cart-subtotal');
+  const shippingElement = document.getElementById('cart-shipping');
+  const taxElement = document.getElementById('cart-tax');
+  const totalElement = document.getElementById('cart-total');
+
+  if(subtotalElement) subtotalElement.textContent = formatPrice(subtotal);
+  if(shippingElement) shippingElement.textContent = shipping > 0 ? formatPrice(shipping) : 0;
+  if(taxElement) taxElement.textContent = formatPrice(tax);
+  if(totalElement) totalElement.textContent = formatPrice(total);
+}
+
 function saveCart(){
   localStorage.setItem('techvibe-cart', JSON.stringify(cart))
 }
@@ -153,12 +239,13 @@ function addToCart(productID) {
       id: product.id,
       name: product.name,
       price: product.price,
+      image: product.image,
       quantity: 1
     });
   }
   updateCartCount();
   saveCart();
-  showNotification(product.name + 'added to cart!')
+  showNotification(product.name + ' Added to cart!')
 }
 
 function viewProducts(productID) {
@@ -208,4 +295,8 @@ document.addEventListener("DOMContentLoaded", () => {
   loadCart();
   displayProducts();
   setupFilters();
+  if(document.getElementById('cart-items')){
+    displayCartItems();
+    updateCartSummary();
+  }
 });
