@@ -199,6 +199,14 @@ function updateCartSummary(){
   if(totalElement) totalElement.textContent = formatPrice(total);
 }
 
+function goToCheckout(){
+  if(cart.length === 0){
+    alert('Your cart is empty!')
+    return;
+  }
+  window.location.href = 'checkout.html'
+}
+
 function saveCart(){
   localStorage.setItem('techvibe-cart', JSON.stringify(cart))
 }
