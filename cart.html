@@ -20,52 +20,50 @@
     </nav>
 
     <main class="main-content">
-        <div class="container">
-            <h1>Shopping Cart</h1>
+      <div class="container">
+        <h1>Shopping Cart</h1>
 
-            <div class="cart-layout">
+        <div class="cart-layout">
+          <div class="cart-items" id="cart-items">
+            <!-- Javascript will fill here -->
+          </div>
 
-                <div class="cart-items" id="cart-items">
-                    <!-- Javascript will fill here -->
-                </div>
-
-                <!-- Order Summary -->
-                 <div class="cart-summary">
-                    <div class="summary-card">
-                        <h3>Order Summary</h3>
-                        <div class="summary-row">
-                            <span>Subtotal:</span>
-                            <span id="cart-subtotal">R0.00</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Shipping:</span>
-                            <span id="cart-shipping">R0.00</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Tax:</span>
-                            <span id="cart-tax">R0.00</span>
-                        </div>
-                        <div class="summary-row total-row">
-                            <span>Total:</span>
-                            <span id="cart-total">R0.00</span>
-                        </div>
-                        <button class="btn btn-primary full-width">Proceed to Checkout</button>
-                        <a href="products.html" class="btn btn-secondary full-width">Continue Shopping</a>
-
-                    </div>
-                 </div>
-
+          <!-- Order Summary -->
+          <div class="cart-summary">
+            <div class="summary-card">
+              <h3>Order Summary</h3>
+              <div class="summary-row">
+                <span>Subtotal:</span>
+                <span id="cart-subtotal">R0.00</span>
+              </div>
+              <div class="summary-row">
+                <span>Shipping:</span>
+                <span id="cart-shipping">R0.00</span>
+              </div>
+              <div class="summary-row">
+                <span>Tax:</span>
+                <span id="cart-tax">R0.00</span>
+              </div>
+              <div class="summary-row total-row">
+                <span>Total:</span>
+                <span id="cart-total">R0.00</span>
+              </div>
+              <button class="btn btn-primary full-width">
+                Proceed to Checkout
+              </button>
+              <a href="products.html" class="btn btn-secondary full-width"
+                >Continue Shopping</a
+              >
             </div>
-            <div class="empty-cart" id="empty-cart" style="display: none;">
-                <h2>Your cart is empty</h2>
-                <p>Looks like you haven't added anything yet.</p>
-                <a href="products.html" class="btn btn-secondary">Start Shopping</a>
-            </div>
-
+          </div>
         </div>
-
+        <div class="empty-cart" id="empty-cart" style="display: none">
+          <h2>Your cart is empty</h2>
+          <p>Looks like you haven't added anything yet.</p>
+          <a href="products.html" class="btn btn-secondary">Start Shopping</a>
+        </div>
+      </div>
     </main>
-
 
     <footer class="footer">
       <p>&copy;<b>2025 TechVibe.</b>All rights reserved.</p>
